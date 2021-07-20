@@ -4,33 +4,34 @@ import { Button } from './button'
 
 const { useState } = React;
 
+
 const Wrapper = styled.div`
-    align-items: center;
-    background-color: "0002;
-    bottom:0;
-    display: flex;
-    justify-content : center;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
+  align-items: center;
+  background-color: #0002;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
 `
 
 const Modal = styled.div`
-    background: #fff;
-    padding: 1rem;
-    width: 32rem;
+  background: #fff;
+  padding: 1rem;
+  width: 32rem;
 `
 
 const TitleInput = styled.input`
-    width: 29rem;
-    padding:0.5rem;
+  width: 29rem;
+  padding: 0.5rem;
 `
 
 const Control = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    padding: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
 `
 
 
