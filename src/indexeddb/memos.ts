@@ -26,6 +26,9 @@ export const putMemo = async (title: string, text: string): Promise<void> => {
     await memos.put({ datetime, title, text });
 }
 
+//indexedDBからページ総数を取得する
+
+//１ページあたりの件数を10件とする
 const NUM_PER_PAGE: number = 10;
 
 export const getMemoPageCount = async (): Promise<number> => {
@@ -34,9 +37,15 @@ export const getMemoPageCount = async (): Promise<number> => {
     return pageCount > 0 ? pageCount : 1;
 }
 
-export const getMemos = (): Promise<MemoRecord[]> => {
+export const getMemos = (page: number): Promise<MemoRecord[]> => {
+    //ページ数をもとに、取得する最初の位置を算出する
+    const offset = (page - 1) * NUM_PER_PAGE
     return memos.orderBy("datetime")
         .reverse()
+        //offsetは取得するリスト内の開始位置を設定する(offset(20)とした場合、20件目以降を取得する)
+        .offset(offset)
+        //limitは取得する件数を指定（page に3が設定されている場合、30件目から10件を取得できる
+        .limit(NUM_PER_PAGE)
         .toArray()
 }
 
