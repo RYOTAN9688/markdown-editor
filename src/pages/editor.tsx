@@ -7,8 +7,12 @@ import { Button } from '../components/button';
 import { SaveModal } from '../components/save_model';
 import { Link } from 'react-router-dom';
 import { Header } from '../components/header';
+import TestWorker from "worker-loader!../worker/test.ts"
 
-const { useState } = React
+//workerのインスタンス（処理を実行する状態のもの）を生成する処理
+const testWorker = new TestWorker()
+
+const { useState, useEffect } = React
 
 
 
@@ -64,6 +68,16 @@ export const Editor: React.FC<Props> = (props) => {
     //モーダルを表示するかどうかのフラグ管理をする
     //管理する値はboolean値　初期状態ではモーダルを出さないためfalse
     const [showModal, setShowModal] = useState(false)
+
+    useEffect(() => {
+        testWorker.onmessage = (e) => {
+            console.log("Main thread Received:", e.data);
+        }
+    }, [])
+
+    useEffect(() => {
+        testWorker.postMessage(text)
+    }, [text])
 
     return (
         <>
