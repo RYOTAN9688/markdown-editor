@@ -16,7 +16,7 @@ const { useState, useEffect } = React;
 
 const HeaderArea = styled.div`
     position: fixed;
-    fight: 0;
+    right: 0;
     top:0;
     left:0; 
 `
@@ -56,16 +56,16 @@ const Paging = styled.div`
     left: 0;
     line-height:2rem;
     padding: 0.5rem;
-    positon: fixed;
+    position: fixed;
     right: 0;
     text-align: center;
 `
 const PagingButton = styled.button`
-background: none;
-border: none;
-display:inline-block;
-height: 2rem;
-padding: 0.5rem 1rem;
+    background: none;
+    border: none;
+    display: inline-block;
+    height: 2rem;
+    padding: 0.5rem 1rem;
 
 &:disabled{
     color: silver;

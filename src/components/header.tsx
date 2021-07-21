@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 const HeaderWrapper = styled.header`
-    aligh-content : center;
+    align-content : center;
     display: flex;
     height: 2rem;
     justify-content: space-between;
