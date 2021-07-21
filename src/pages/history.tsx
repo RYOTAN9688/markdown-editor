@@ -58,7 +58,7 @@ const Paging = styled.div`
     padding: 0.5rem;
     positon: fixed;
     right: 0;
-    text-alo\ign: center;
+    text-align: center;
 `
 const PagingButton = styled.button`
 background: none;
@@ -80,13 +80,29 @@ interface Props {
 export const History: React.FC<Props> = (props) => {
     const { setText } = props
     const [memos, setMemos] = useState<MemoRecord[]>([])
+    //現在のページと最大ページを管理
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState(1)
+
     const history = useHistory()
     useEffect(() => {
         getMemos(1).then(setMemos)
         getMemoPageCount().then(setMaxPage)
     }, [])
+
+    const canNextPage: boolean = page < maxPage;
+    const canPrevPage: boolean = page > 1;
+    //ページ遷移のボタンをクリックした場合に実行される関数（引数にページ数を指定）
+    const movePage = (targetPage: number) => {
+        //遷移先のページが遷移可能かを判定　遷移不可である場合はその段階で処理を中断する
+        if (targetPage < 1 || maxPage < targetPage) {
+            return
+        }
+        //遷移可能な場合は管理されているpageを更新
+        setPage(targetPage)
+        //indexedDBから新しいページのレコードを取得、memosを更新
+        getMemos(targetPage).then(setMemos)
+    }
 
 
     return (
@@ -110,6 +126,21 @@ export const History: React.FC<Props> = (props) => {
                     </Memo>
                 ))}
             </Wrapper>
+            <Paging>
+                <PagingButton
+                    onClick={() => movePage(page - 1)}
+                    disabled={!canPrevPage}
+                >
+                    ＜
+                </PagingButton>
+                {page}/{maxPage}
+                <PagingButton
+                    onClick={() => movePage(page + 1)}
+                    disabled={!canNextPage}
+                >
+                    ＞
+                </PagingButton>
+            </Paging>
         </>
     )
 }
