@@ -1,16 +1,14 @@
 import *as React from 'react';
 import styled from 'styled-components';
 import { useStateWithStorage } from '../hooks/use_state_with_storage';
-import * as ReactMarkdown from 'react-markdown';
 import { putMemo } from '../indexeddb/memos';
 import { Button } from '../components/button';
 import { SaveModal } from '../components/save_model';
 import { Link } from 'react-router-dom';
 import { Header } from '../components/header';
-import TestWorker from "worker-loader!../worker/test.ts"
-
-//workerのインスタンス（処理を実行する状態のもの）を生成する処理
-const testWorker = new TestWorker()
+import ConvertMarkdownWorker from "worker-loader!../worker/convent_markdown_worker"
+//インスタンス（処理を実行する状態のもの）を生成する処理
+const convertMarkdownworker = new ConvertMarkdownWorker()
 
 const { useState, useEffect } = React
 
@@ -68,15 +66,17 @@ export const Editor: React.FC<Props> = (props) => {
     //モーダルを表示するかどうかのフラグ管理をする
     //管理する値はboolean値　初期状態ではモーダルを出さないためfalse
     const [showModal, setShowModal] = useState(false)
+    const [html, setHtml] = useState("")
+
 
     useEffect(() => {
-        testWorker.onmessage = (e) => {
-            console.log("Main thread Received:", e.data);
+        convertMarkdownworker.onmessage = (e) => {
+            setHtml(e.data.html)
         }
     }, [])
 
     useEffect(() => {
-        testWorker.postMessage(text)
+        convertMarkdownworker.postMessage(text)
     }, [text])
 
     return (
@@ -99,7 +99,7 @@ export const Editor: React.FC<Props> = (props) => {
                     value={text}
                 />
                 <Preview>
-                    <ReactMarkdown children={text} />
+                    <div dangerouslySetInnerHTML={{ __html: html }} />
                 </Preview>
             </Wrapper>
 
