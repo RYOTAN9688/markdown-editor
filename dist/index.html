@@ -10,5 +10,22 @@
 </body>
 <div id="app"></div>
 <script src="./index.js"></script>
+<script type="text/javascript">
+    //ブラウザにサービスワーカーが実装されているかをチェックする
+    if ("serviceWorker" in navigator) {
+        //ページのロードが完了した時に実行する関数を登録
+        window.addEventListener("load", () => {
+            //サービスワーカーを登録する処理。register()にはサービスワーカーのパスを渡す
+            navigator.serviceWorker.register('./sw.js')
+                //サービスワーカーの登録が完了とエラー時の処理を登録
+                //成功時に出力しているregistration.scopeはサービスワーカーのスコープ　？？
+                .then((registration) => {
+                    console.log("ServiceWorker registration successful with scope:", registration.scope);
+                }, (err) => {
+                    console.log("ServiceWorker registration failed:", err);
+                })
+        })
+    }
+</script>
 
 </html>
