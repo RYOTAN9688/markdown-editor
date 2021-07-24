@@ -37,7 +37,6 @@ const networkFallingBackToCache = async (request) => {
 //Fetchイベント時に実行する処理を登録。fetchとはネットワーク
 //を経由してリソースを取得するために使用するapi
 self.addEventListener("fetch", (event) => {
-    //
     event.respondWith(networkFallingBackToCache(event.request))
 })
 
